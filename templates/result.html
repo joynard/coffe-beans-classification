@@ -4,28 +4,24 @@
     <meta charset="UTF-8">
     <title>Hasil Prediksi</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
 </head>
 <body>
     <div class="container">
         <h1>Hasil Prediksi</h1>
-
-        <img src="{{ url_for('uploaded_file', filename=image_filename) }}" 
-             alt="Uploaded Coffee Bean" 
-             class="result-image">
-
+        <img src="{{ url_for('uploaded_file', filename=image_filename) }}" alt="Uploaded Coffee Bean" class="result-image">
+        
         <h3>Hasil Prediksi Jenis Kopi:</h3>
-        <h1 style="margin-top: 0;"><strong>{{ prediction }}</strong></h1>
-        <p>Tingkat Keyakinan: 
-            <strong>{{ "%.2f"|format(confidence * 100) }}%</strong>
-        </p>
+        <h1 style="margin-top:0;"><strong>{{ prediction }}</strong></h1>
 
+        {% if confidence > 0 %}
+            <p>Tingkat Keyakinan: <strong>{{ "%.2f"|format(confidence * 100) }}%</strong></p>
+        {% endif %}
+        
         {% if coffee_info %}
         <div class="coffee-info-details">
             <h2>Tentang Kopi {{ coffee_info.nama }}</h2>
-            <p style="text-align: justify; font-size: 0.95rem;">
-                {{ coffee_info.deskripsi }}
-            </p>
-
+            <p style="text-align: justify; font-size: 0.95rem;">{{ coffee_info.deskripsi }}</p>
             <div class="features-box">
                 <div class="feature-column">
                     <h4>Ciri-Ciri Umum</h4>
@@ -44,27 +40,19 @@
                     </ul>
                 </div>
             </div>
-
             <h4>Fun Fact!</h4>
             <p><em>{{ coffee_info.fun_fact }}</em></p>
         </div>
         {% endif %}
 
+        {% if metrics %}
         <div class="performance-details">
             <h2>Detail Performa Model ({{ chosen_model }})</h2>
-            <p>
-                Akurasi Keseluruhan: 
-                <strong>{{ "%.2f"|format(metrics.overall_accuracy * 100) }}%</strong>
-            </p>
-
+            <p>Akurasi Keseluruhan: <strong>{{ "%.2f"|format(metrics.overall_accuracy * 100) }}%</strong></p>
             <table class="performance-table">
                 <thead>
                     <tr>
-                        <th>Kelas</th>
-                        <th>Precision</th>
-                        <th>Recall</th>
-                        <th>F1-Score</th>
-                        <th>Support</th>
+                        <th>Kelas</th><th>Precision</th><th>Recall</th><th>F1-Score</th><th>Support</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,7 +70,7 @@
                 </tbody>
             </table>
         </div>
-
+        {% endif %}
         <br>
         <a href="/">Coba Prediksi Gambar Lain</a>
     </div>

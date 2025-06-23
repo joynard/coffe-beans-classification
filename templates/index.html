@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <title>Klasifikasi Biji Kopi</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
 </head>
 <body>
     <div class="container">
         <h1>Klasifikasi Jenis Biji Kopi</h1>
-
+        
         {% if model_names|length > 1 %}
             <p>Pilih model klasifikasi dan upload gambar biji kopi untuk diprediksi.</p>
             <form id="upload-form" method="post" enctype="multipart/form-data">
@@ -18,26 +19,25 @@
                         <option value="{{ model_name }}">{{ model_name }}</option>
                     {% endfor %}
                 </select>
-        {% elif model_names|length == 1 %}
-            <p>Menggunakan model: <strong>{{ model_names[0] }}</strong></p>
-            <form id="upload-form" method="post" enctype="multipart/form-data">
         {% else %}
-            <p style="color:red;"><strong>Tidak ada model yang tersedia untuk digunakan.</strong></p>
+            {% if model_names|length == 1 %}
+                <p>Menggunakan model: <strong>{{ model_names[0] }}</strong></p>
+            {% else %}
+                <p style="color:red;"><strong>Tidak ada model yang tersedia untuk digunakan.</strong></p>
+            {% endif %}
             <form id="upload-form" method="post" enctype="multipart/form-data">
         {% endif %}
 
             <label for="file" style="margin-top: 1rem;">Upload Gambar:</label>
             <input type="file" name="file" id="file" accept=".jpg, .jpeg, .png" required>
-
+            
             <input type="submit" id="submit-button" value="Upload & Prediksi">
 
             <div id="loader" class="loader" hidden></div>
         </form>
 
         {% if error %}
-            <p style="color:red; margin-top: 15px;">
-                <strong>Error:</strong> {{ error }}
-            </p>
+            <p style="color:red; margin-top: 15px;"><strong>Error:</strong> {{ error }}</p>
         {% endif %}
     </div>
 
