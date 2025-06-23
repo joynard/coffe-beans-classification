@@ -102,3 +102,18 @@ input[type="submit"]:hover, a:hover {
 .performance-table tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
+
+.loader {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #8b4513; /* Saddle Brown */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

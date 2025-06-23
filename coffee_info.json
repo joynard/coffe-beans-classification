@@ -1,0 +1,50 @@
+{
+    "arabica": {
+        "nama": "Arabika (Arabica)",
+        "deskripsi": "Dianggap sebagai kopi 'premium', Arabika memiliki rasa yang kompleks, aromatik, dan cenderung lebih asam (acidity) dengan body yang lebih ringan. Spesies ini mendominasi sekitar 60% pasar kopi dunia.",
+        "ciri_ciri": [
+            "Bentuk biji lonjong/oval.",
+            "Garis tengah cenderung bergelombang.",
+            "Kadar kafein lebih rendah (sekitar 1.5%).",
+            "Aroma kuat seperti buah dan bunga."
+        ],
+        "cocok_untuk": [
+            "Manual Brew (Pour-over, V60, Chemex)",
+            "Espresso (terutama single-origin)",
+            "Minuman kopi 'black' tanpa gula."
+        ],
+        "fun_fact": "Kopi Arabika adalah spesies kopi pertama yang dibudidayakan, lebih dari 1.000 tahun yang lalu di dataran tinggi Ethiopia."
+    },
+    "robusta": {
+        "nama": "Robusta",
+        "deskripsi": "Seperti namanya, Robusta adalah spesies yang lebih 'kuat' dan tahan banting. Rasanya lebih pahit, bold, dengan body yang tebal dan crema yang kaya. Kadar kafeinnya jauh lebih tinggi daripada Arabika.",
+        "ciri_ciri": [
+            "Bentuk biji cenderung bulat.",
+            "Garis tengah lurus.",
+            "Kadar kafein sangat tinggi (2.5% atau lebih).",
+            "Aroma kuat seperti cokelat dan kacang."
+        ],
+        "cocok_untuk": [
+            "Bahan utama Espresso Blends (untuk crema tebal)",
+            "Kopi instan",
+            "Minuman kopi dengan susu (seperti Kopi Susu Gula Aren)."
+        ],
+        "fun_fact": "Karena kadar kafeinnya yang tinggi, tanaman Robusta secara alami lebih tahan terhadap hama dan penyakit dibandingkan Arabika."
+    },
+    "liberica": {
+        "nama": "Liberika (Liberica)",
+        "deskripsi": "Spesies yang lebih langka dengan profil rasa yang sangat unik. Beberapa menggambarkannya memiliki aroma buah dan bunga yang 'nyentrik', terkadang dengan aftertaste sedikit 'smoky' atau 'woody'. Ukuran bijinya tidak seragam dan seringkali sangat besar.",
+        "ciri_ciri": [
+            "Ukuran dan bentuk biji tidak beraturan, seringkali besar.",
+            "Asimetris, mirip buah almond.",
+            "Memiliki 'aroma tajam' yang khas saat disangrai.",
+            "Sangat langka, kurang dari 2% pasar kopi dunia."
+        ],
+        "cocok_untuk": [
+            "Eksperimen oleh para pecinta kopi",
+            "House blend unik di kedai kopi tertentu",
+            "Kopi tubruk dengan karakter yang kuat."
+        ],
+        "fun_fact": "Di Filipina, Liberika dikenal sebagai 'Kape Barako' (Kopi Jantan) karena profil rasanya yang kuat dan berani."
+    }
+}
