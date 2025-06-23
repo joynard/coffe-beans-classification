@@ -1,0 +1,23 @@
+# Virtual Environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE/Editor specific files
+.vscode/
+.idea/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# File dataset lokal (jika masih ada)
+datasets/
+
+# File ZIP dataset
+*.zip
+
+# File sensitif (untuk masa depan)
+.env

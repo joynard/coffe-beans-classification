@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Hasil Prediksi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Hasil Prediksi</h1>
+        <img src="{{ url_for('uploaded_file', filename=image_filename) }}" alt="Uploaded Coffee Bean" class="result-image">
+        
+        <h3>Hasil Prediksi Jenis Kopi:</h3>
+        <h1 style="margin-top:0;"><strong>{{ prediction }}</strong></h1>
+
+        <p>Tingkat Keyakinan: <strong>{{ "%.2f"|format(confidence * 100) }}%</strong></p>
+
+
+        <div class="performance-details">
+            <h2>Detail Performa Model ({{ chosen_model }})</h2>
+            <p>Akurasi Keseluruhan: <strong>{{ "%.2f"|format(metrics.overall_accuracy * 100) }}%</strong></p>
+            <table class="performance-table">
+                <thead>
+                    <tr>
+                        <th>Kelas</th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                        <th>F1-Score</th>
+                        <th>Support</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for class, report in metrics.items() %}
+                        {% if class in ['arabica', 'liberica', 'robusta'] %}
+                        <tr>
+                            <td><strong>{{ class.capitalize() }}</strong></td>
+                            <td>{{ "%.2f"|format(report.precision) }}</td>
+                            <td>{{ "%.2f"|format(report.recall) }}</td>
+                            <td>{{ "%.2f"|format(report['f1-score']) }}</td>
+                            <td>{{ report.support }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <a href="/">Coba Prediksi Gambar Lain</a>
+    </div>
+</body>
+</html>

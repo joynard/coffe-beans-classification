@@ -1,0 +1,104 @@
+/* static/css/style.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f5dc; /* Beige */
+    color: #3f2a1d; /* Dark Coffee Brown */
+    margin: 0;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+h1 {
+    color: #8b4513; /* Saddle Brown */
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    color: #8b4513;
+    margin-top: 2rem;
+    border-bottom: 2px solid #d2b48c; /* Tan */
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+p {
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+select, input[type="file"] {
+    padding: 12px;
+    border: 2px solid #d2b48c;
+    border-radius: 8px;
+    background-color: #fafafa;
+    font-family: 'Poppins', sans-serif;
+}
+
+input[type="submit"], a {
+    background-color: #8b4513; /* Saddle Brown */
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+input[type="submit"]:hover, a:hover {
+    background-color: #a0522d; /* Sienna */
+    transform: translateY(-2px);
+}
+
+.result-image {
+    max-width: 80%;
+    height: auto;
+    border-radius: 10px;
+    border: 3px solid #d2b48c;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.performance-table {
+    width: 100%;
+    margin-top: 1rem;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.performance-table th, .performance-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+.performance-table thead {
+    background-color: #d2b48c; /* Tan */
+    color: #fff;
+}
+
+.performance-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
