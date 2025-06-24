@@ -9,13 +9,8 @@ import numpy as np
 from skimage.feature import graycomatrix, graycoprops
 from skimage.measure import label, regionprops
 
-# ==============================================================================
-# PENYEMPURNAAN 1: Menggunakan Path Absolut untuk Keandalan Maksimal
-# ==============================================================================
 # Mendapatkan direktori tempat skrip app.py ini berada
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-# ==============================================================================
-
 
 # Fungsi preprocessing & ekstraksi fitur (TIDAK BERUBAH)
 def normalize_image(image, target_size=(512, 512)):
@@ -36,25 +31,22 @@ def extract_features_v1(image, mask):
 # Inisialisasi aplikasi Flask
 app = Flask(__name__)
 
-# --- PERUBAHAN: Konfigurasi path sekarang menggunakan path absolut ---
+# Konfigurasi path absolut
 app.config['UPLOAD_FOLDER'] = os.path.join(SCRIPT_DIR, 'uploads')
 app.config['MODEL_FOLDER'] = os.path.join(SCRIPT_DIR, 'model')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
-# --- BAGIAN BARU: Memuat data informasi kopi dari file JSON ---
+# Memuat data informasi kopi
 JSON_PATH = os.path.join(SCRIPT_DIR, 'coffee_info.json')
 try:
-    with open(JSON_PATH, 'r', encoding='utf-8') as f:
-        coffee_info_data = json.load(f)
+    with open(JSON_PATH, 'r', encoding='utf-8') as f: coffee_info_data = json.load(f)
     print(">>> Informasi kopi berhasil dimuat.")
 except FileNotFoundError:
-    coffee_info_data = {}
-    print(f">>> PERINGATAN: coffee_info.json tidak ditemukan di path: {JSON_PATH}")
+    coffee_info_data = {}; print(f">>> PERINGATAN: coffee_info.json tidak ditemukan di path: {JSON_PATH}")
 
-# --- PERUBAHAN: Fungsi load_all_models sekarang lebih andal ---
+# Fungsi memuat semua model
 def load_all_models():
-    models = {}
-    path = app.config['MODEL_FOLDER']
+    models = {}; path = app.config['MODEL_FOLDER']
     if not os.path.exists(path): return {}
     for file in os.listdir(path):
         if file.endswith('.pkl') and '_scaler' not in file:
@@ -66,27 +58,43 @@ def load_all_models():
                 model_data = {'model': joblib.load(model_path), 'scaler': joblib.load(scaler_path)}
                 with open(metrics_path, 'r') as f: model_data['metrics'] = json.load(f)
                 models[model_name] = model_data; print(f"Loaded model: {model_name}")
-            except FileNotFoundError:
-                print(f"Warning: Could not load all files for model '{model_name}'. Skipping.")
+            except FileNotFoundError: print(f"Warning: Could not load all files for model '{model_name}'. Skipping.")
     return models
-
 models_data = load_all_models()
 
-# Sisa kode tidak berubah sampai ke rute utama...
+# Fungsi memeriksa ekstensi file
 def allowed_file(filename): return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Fungsi Klasifikasi dengan tambahan Logika Threshold
 def classify_coffee_bean(file_path, model_name):
     if not models_data or model_name not in models_data: return "Error: Model tidak tersedia.", 0.0, None
     model_info = models_data[model_name]; model = model_info['model']; scaler = model_info['scaler']; metrics = model_info['metrics']
+    
     segmented, mask = preprocess_image(file_path)
     if segmented is None: return "Tidak dapat memproses gambar.", 0.0, metrics
+    
     features = extract_features_v1(segmented, mask)
     if features is None: return "Tidak dapat mengekstrak fitur.", 0.0, metrics
+    
     df_features = pd.DataFrame([features]); scaled_features = scaler.transform(df_features)
     probabilities = model.predict_proba(scaled_features)[0]
-    confidence = np.max(probabilities); predicted_class_index = np.argmax(probabilities)
+    confidence = np.max(probabilities)
+    
+    # ==============================================================================
+    # BAGIAN BARU: Threshold Keyakinan 75%
+    # Jika keyakinan tertinggi kurang dari 75%, anggap "Tidak Dikenali"
+    # ==============================================================================
+    CONFIDENCE_THRESHOLD = 0.75 
+    if confidence < CONFIDENCE_THRESHOLD:
+        return "Tidak Dikenali / Objek Asing", confidence, metrics
+    # ==============================================================================
+
+    predicted_class_index = np.argmax(probabilities)
     predicted_class_name = model.classes_[predicted_class_index]
+    
     return predicted_class_name.capitalize(), confidence, metrics
 
+# Rute utama (tidak berubah)
 @app.route('/', methods=['GET', 'POST'])
 def upload_and_classify():
     model_names = list(models_data.keys())
@@ -96,31 +104,20 @@ def upload_and_classify():
         if len(model_names) > 1: chosen_model = request.form.get('model_choice')
         elif len(model_names) == 1: chosen_model = model_names[0]
         if file.filename == '': return render_template('index.html', model_names=model_names, error='Tidak ada file yang dipilih')
-        
         if file and allowed_file(file.filename) and chosen_model:
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
             prediction_result, confidence_score, metrics_result = classify_coffee_bean(file_path, chosen_model)
-            
-            # --- BAGIAN BARU: Mengambil info kopi sesuai hasil prediksi ---
             predicted_key = prediction_result.lower()
             coffee_info = coffee_info_data.get(predicted_key, None)
-            
-            # --- PERUBAHAN: Mengirim 'coffee_info' ke template ---
-            return render_template('result.html', 
-                                   prediction=prediction_result, 
-                                   confidence=confidence_score,
-                                   metrics=metrics_result,
-                                   chosen_model=chosen_model,
-                                   image_filename=filename,
-                                   coffee_info=coffee_info) # <-- Variabel baru dikirim
-
+            return render_template('result.html', prediction=prediction_result, confidence=confidence_score, metrics=metrics_result, chosen_model=chosen_model, image_filename=filename, coffee_info=coffee_info)
     return render_template('index.html', model_names=model_names)
 
+# Rute untuk menyajikan gambar (tidak berubah)
 @app.route('/uploads/<filename>')
 def uploaded_file(filename): return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-# Menjalankan server
+# Menjalankan server (tidak berubah)
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
