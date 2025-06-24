@@ -117,3 +117,9 @@ input[type="submit"]:hover, a:hover {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* Menghilangkan bullet points dan merapikan daftar di halaman hasil */
+.feature-column ul {
+    list-style-type: none;
+    padding-left: 0;
+}
