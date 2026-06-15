@@ -2,7 +2,7 @@
 
 Computer vision project designed to classify coffee bean images into specific varietals using a selection of deep learning models. This repository contains the complete web application, inference pipeline, and pre-trained model weights. 
 
-The application is used to deployed on Railway for real-world testing and evaluation (depricated)
+The application is used to deployed on Railway for real-world testing and evaluation (depricated since 7, July 2025)
 
 ---
 
