@@ -1,1 +1,1 @@
-Users can choose between several models to predict the uploaded coffe beans image, the model trains only to recognize 3 types of beans: Arabica, Robust (Canephora) Liberica. Other than those, output will be "Tidak Dikenali" or Unrecognized.
+Users can choose between several models to predict the uploaded coffe beans image, the model trains only to recognize 3 types of beans: Arabica, Robusta (Canephora) Liberica. Other than those, output will be "Tidak Dikenali" or Unrecognized.
